@@ -216,6 +216,78 @@ nav a:hover {
   background: rgba(61, 194, 224, 0.08);
 }
 
+nav a.active {
+  color: var(--white);
+  background: rgba(61, 194, 224, 0.12);
+}
+
+nav a.active::after {
+  width: 60%;
+}
+
+nav a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+nav .nav-dropdown {
+  position: relative;
+}
+
+nav .nav-dropdown summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d4eaf2;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.88rem;
+  letter-spacing: 0.1px;
+  cursor: pointer;
+  list-style: none;
+  transition: all 0.3s ease;
+}
+
+nav .nav-dropdown summary::-webkit-details-marker { display: none; }
+nav .nav-dropdown summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+nav .nav-dropdown[open] summary::after { transform: translateY(1px) rotate(225deg); }
+nav .nav-dropdown summary:hover,
+nav .nav-dropdown.active summary {
+  color: #fff;
+  background: rgba(61, 194, 224, 0.12);
+}
+nav .nav-dropdown summary:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+nav .nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 1001;
+  min-width: 205px;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  background: #0a2a3f;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+}
+nav .nav-dropdown-menu a {
+  display: block;
+  white-space: nowrap;
+}
+nav .nav-dropdown-menu a::after { display: none; }
+
 nav a:hover::after {
   width: 60%;
 }
@@ -1713,6 +1785,14 @@ footer {
     font-size: 0.78rem;
     padding: 5px 10px;
   }
+  nav .nav-dropdown summary {
+    font-size: 0.78rem;
+    padding: 5px 10px;
+  }
+  nav .nav-dropdown-menu {
+    left: 50%;
+    transform: translateX(-50%);
+  }
   .nav-social {
     margin-left: 0;
   }
@@ -1886,12 +1966,16 @@ nav a {
   letter-spacing: 0.1px;
 }
 nav a.nav-cta {
-  background: var(--green);
+  background: var(--rich-blue);
   color: #fff;
   padding: 9px 16px;
 }
 nav a.nav-cta:hover {
-  background: #1b9a6b;
+  background: var(--bright-blue);
+}
+nav a.nav-cta.active {
+  background: var(--navy);
+  color: #fff;
 }
 
 #home {
@@ -2426,4 +2510,121 @@ footer {
 .footer-contact-link {
   color: #8ac4d8;
   text-decoration: none;
+}
+
+/* Business Solutions */
+#business-solutions {
+  background: linear-gradient(180deg, #f1f7fb 0%, #fff 100%);
+  scroll-margin-top: 90px;
+}
+#business-solutions .section-header .subtitle,
+.business-packages-heading .subtitle,
+.consultation-copy .subtitle { color: var(--green); }
+#business-solutions .section-header h2 span,
+.business-packages-heading h2 span,
+.consultation-copy h2 span { color: var(--green); }
+.business-service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.business-service-card {
+  background: #fff;
+  border: 1px solid #e0ece6;
+  border-radius: 18px;
+  padding: 28px 25px;
+  box-shadow: 0 8px 26px rgba(15, 65, 46, .055);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.business-service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(15, 65, 46, .11);
+  border-color: #a8d8c0;
+}
+.business-service-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: #e6f1f7;
+  color: var(--rich-blue);
+  font-size: 1.35rem;
+  margin-bottom: 18px;
+}
+.business-service-card h3 { color: #123d2d; font-size: 1.15rem; line-height: 1.4; margin-bottom: 10px; }
+.business-service-card p { color: #52665c; font-size: .95rem; margin-bottom: 14px; }
+.business-service-card ul,
+.business-package-card ul { list-style: none; display: grid; gap: 8px; margin: 0; padding: 0; }
+.business-service-card li,
+.business-package-card li { color: #385348; font-size: .9rem; padding-left: 23px; position: relative; }
+.business-service-card li::before,
+.business-package-card li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 800; }
+.business-packages-heading { text-align: center; max-width: 760px; margin: 82px auto 28px; }
+.business-packages-heading h2 { color: #123d2d; font-size: clamp(1.8rem, 3vw, 2.5rem); margin: 5px 0 10px; }
+.business-packages-heading p:last-child { color: #52665c; }
+.business-package-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+.business-package-card { display: flex; flex-direction: column; background: #fff; border: 1px solid #dce9e2; border-radius: 18px; padding: 25px 21px; box-shadow: 0 8px 24px rgba(15, 65, 46, .05); }
+.business-package-card.featured-package { border: 2px solid var(--rich-blue); box-shadow: 0 14px 35px rgba(19, 107, 140, .12); }
+.package-kicker { color: var(--green); font-size: .75rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.business-package-card h3 { color: #123d2d; font-size: 1.22rem; margin: 8px 0; }
+.business-package-card p { color: #52665c; font-size: .9rem; margin-bottom: 16px; }
+.business-package-card ul { margin-bottom: 22px; }
+.business-package-card .btn-primary { margin-top: auto; width: 100%; justify-content: center; background: var(--rich-blue); font-size: .86rem; padding: 12px 14px; }
+.business-package-card .btn-primary:hover { background: var(--navy); }
+.business-consultation {
+  margin-top: 78px;
+  display: grid;
+  grid-template-columns: .85fr 1.15fr;
+  gap: 42px;
+  align-items: start;
+  padding: clamp(24px, 4vw, 48px);
+  border-radius: 26px;
+  background: linear-gradient(135deg, var(--navy), var(--rich-blue));
+  color: #fff;
+  box-shadow: 0 18px 50px rgba(16, 58, 43, .14);
+  scroll-margin-top: 90px;
+}
+.consultation-copy { position: sticky; top: 110px; }
+.consultation-copy h2 { color: #fff; font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.2; margin: 10px 0 18px; }
+.consultation-copy p:not(.subtitle) { color: #d6e9f1; margin-bottom: 24px; }
+.consultation-promise { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0; color: #e6f1f6; font-size: .94rem; }
+.consultation-promise i { color: var(--cyan); margin-top: 5px; }
+.consultation-form { background: #fff; color: #1a2a3a; border-radius: 18px; padding: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.consultation-form .form-group { min-width: 0; }
+.consultation-form .form-group:nth-last-of-type(1),
+.consultation-form .form-group:nth-last-of-type(2),
+.consultation-submit,
+.consultation-note { grid-column: 1 / -1; }
+.consultation-form label { display: block; font-weight: 700; font-size: .88rem; margin-bottom: 7px; color: var(--navy); }
+.consultation-form input,
+.consultation-form select,
+.consultation-form textarea { width: 100%; min-width: 0; border: 1px solid #d6e3dc; border-radius: 9px; padding: 12px 13px; font: inherit; font-size: .92rem; color: #20392d; background: #fff; }
+.consultation-form input:focus,
+.consultation-form select:focus,
+.consultation-form textarea:focus { outline: 2px solid rgba(19, 107, 140, .2); border-color: var(--rich-blue); }
+.consultation-form textarea { resize: vertical; }
+.consultation-submit { display: flex; gap: 9px; justify-content: center; align-items: center; width: 100%; background: var(--rich-blue); margin-top: 6px; }
+.consultation-submit:hover { background: var(--navy); }
+.consultation-note { color: #718078; font-size: .77rem; text-align: center; margin-top: 10px; }
+.business-disclaimer { color: #6c7b73; font-size: .8rem; text-align: center; max-width: 950px; margin: 24px auto 0; }
+.package-select:focus-visible { outline: 3px solid #67e0b4; outline-offset: 3px; }
+@media (max-width: 1100px) {
+  .business-package-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .business-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+  .business-consultation { grid-template-columns: 1fr; gap: 25px; margin-top: 55px; }
+  .consultation-copy { position: static; }
+  .consultation-form { padding: 22px; }
+  .business-packages-heading { margin-top: 58px; }
+}
+@media (max-width: 520px) {
+  .business-service-grid,
+  .business-package-grid,
+  .consultation-form { grid-template-columns: 1fr; }
+  .consultation-form .form-group,
+  .consultation-submit,
+  .consultation-note { grid-column: 1; }
+  .business-service-card { padding: 23px 21px; }
 }

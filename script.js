@@ -1,5 +1,46 @@
 
       // Header shadow on scroll + Back to top visibility
+      const sectionLinks = Array.from(document.querySelectorAll('nav a[href^="#"]'));
+      const linkedSections = sectionLinks
+        .map((link) => ({ link, section: document.querySelector(link.getAttribute("href")) }))
+        .filter((item) => item.section)
+        .sort((a, b) =>
+          a.section.compareDocumentPosition(b.section) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
+        );
+
+      function updateActiveNav() {
+        const header = document.getElementById("header");
+        const activationLine = (header?.offsetHeight || 0) + 36;
+        let current = linkedSections[0];
+
+        for (const item of linkedSections) {
+          if (item.section.getBoundingClientRect().top <= activationLine) {
+            current = item;
+          } else {
+            break;
+          }
+        }
+
+        sectionLinks.forEach((link) => {
+          const isActive = link === current?.link;
+          link.classList.toggle("active", isActive);
+          if (isActive) link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
+        });
+
+        document.querySelectorAll("nav .nav-dropdown").forEach((dropdown) => {
+          dropdown.classList.toggle("active", Boolean(dropdown.querySelector("a.active")));
+        });
+      }
+
+      sectionLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          document.querySelectorAll("nav .nav-dropdown[open]").forEach((dropdown) => {
+            dropdown.removeAttribute("open");
+          });
+        });
+      });
+
       window.addEventListener("scroll", function () {
         const header = document.getElementById("header");
         const backToTop = document.getElementById("backToTop");
@@ -15,7 +56,12 @@
         } else {
           backToTop.classList.remove("show");
         }
+
+        updateActiveNav();
       });
+
+      window.addEventListener("resize", updateActiveNav);
+      updateActiveNav();
 
       // Phase tabs
       document.querySelectorAll(".phase-tab").forEach((tab) => {
@@ -88,4 +134,47 @@
         });
       }, { threshold: 0.10 });
       revealTargets.forEach((el) => revealObserver.observe(el));
+
+      // Business consultation enquiries are prepared for WhatsApp review.
+      const businessConsultationForm = document.getElementById("businessConsultationForm");
+      if (businessConsultationForm) {
+        businessConsultationForm.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const getValue = (id) => document.getElementById(id)?.value.trim() || "Not provided";
+          const lines = [
+            "Hello JNK IT Systems! I would like a business consultation.",
+            "",
+            `*Name:* ${getValue("consultName")}`,
+            `*Business name:* ${getValue("consultBusiness")}`,
+            `*Email:* ${getValue("consultEmail")}`,
+            `*Phone:* ${getValue("consultPhone")}`,
+            `*Business stage:* ${getValue("consultStage")}`,
+            `*Service/package:* ${getValue("consultService")}`,
+            `*Details:* ${getValue("consultDetails")}`
+          ];
+          const url = `https://wa.me/27651286003?text=${encodeURIComponent(lines.join("\n"))}`;
+          window.open(url, "_blank", "noopener,noreferrer");
+        });
+      }
+
+      // Package buttons preselect the matching enquiry option and focus the form.
+      document.querySelectorAll(".package-select").forEach((button) => {
+        button.addEventListener("click", function () {
+          const serviceSelect = document.getElementById("consultService");
+          const packageName = this.dataset.package;
+          if (serviceSelect) {
+            const option = Array.from(serviceSelect.options).find(
+              (item) => item.text.trim() === packageName
+            );
+            if (option) serviceSelect.value = option.value;
+          }
+          document.getElementById("business-consultation")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+          window.setTimeout(() => {
+            document.getElementById("consultName")?.focus({ preventScroll: true });
+          }, 450);
+        });
+      });
 
